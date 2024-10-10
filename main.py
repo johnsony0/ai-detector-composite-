@@ -5,26 +5,8 @@ import re
 
 '''
 Check if a text is AI generated or assisted through multiple sources
-such as ZeroGPT, GPTZero, Grammarly, Quillbot, Copyleaks
+such as ZeroGPT, GPTZero, Grammarly, Quillbot, Writer
 '''
-
-'''def get_grammarly_prediction(text):
-  with sync_playwright() as p:
-    browser = p.chromium.launch(headless=False)
-    page = browser.new_page()
-    page.goto("https://www.grammarly.com/ai-detector")
-
-    text_area_xpath = ''
-    page.fill(text_area_xpath,text)
-
-    button_xpath = ''
-    page.click(button_xpath)
-
-    output_xpath = ''
-    output_text = page.locator(output_xpath).inner_text()
-    print(f'Grammarly predicts: {output_text}')
-
-    browser.close()'''
 
 def get_zerogpt_prediction(text,headless,timeout):
   try:
@@ -178,7 +160,7 @@ def get_writer_prediction(text, headless, timeout):
 
 
 def main():
-  text = '''If the email text field element is not easily identifiable for some reason, 
+  test_text = '''If the email text field element is not easily identifiable for some reason, 
   but the password text field element is, we can locate the text field element using the 
   fact that it is an “input” element “above” the password element. If the password text 
   field element is not easily identifiable for some reason, but the email text field element is, 
@@ -190,9 +172,14 @@ def main():
   we can locate the text field element using the fact that it is an “input” element “below” the 
   email element.'''
 
-  #text = input("Please enter the text you want to analyze: ")
-  headless = True
-  timeout = 30000
+  parser = argparse.ArgumentParser(description="AI Text Analysis CLI Tool")
+  parser.add_argument("--headless", action='store_true', help="Run in headless mode (default is true)")
+  parser.add_argument("--timeout", type=int, default=15000, help="Set timeout in milliseconds (default is 30000)")
+
+  args = parser.parse_args()
+  headless = args.headless
+  timeout = args.timeout
+  text = input("Please enter the text you want to analyze: ")
 
   text_length = len(text)
   text_words = len(text.split())
